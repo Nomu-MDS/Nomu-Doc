@@ -107,8 +107,11 @@ const config: Config = {
         {
           title: 'Projet',
           items: [
-            { label: 'Nomu App', href: 'https://app.nomu.charlesremy.dev' },
+            { label: 'Nomu', href: 'https://app.nomu.charlesremy.dev' },
             { label: 'GitHub Backend', href: 'https://github.com/Crmy7/Nomu-Back' },
+            { label: 'GitHub Frontend', href: 'https://github.com/Nomu-MDS/Nomu-Front' },
+            { label: 'GitHub Web', href: 'https://github.com/Nomu-MDS/Nomu-Web' },
+            { label: 'GitHub Admin', href: 'https://github.com/Nomu-MDS/Nomu-Admin' },
           ],
         },
       ],

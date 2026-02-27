@@ -49,12 +49,13 @@
 /* ── Navbar ─────────────────────────────────── */
 .navbar {
   background-color: var(--nomu-navy);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
   padding: 0 1.5rem;
 }
 
 .navbar__logo {
-  height: 2rem;
+  width: 90px;
+  height: auto;
 }
 
 .navbar__title {
@@ -129,7 +130,7 @@
 
 [data-theme='dark'] .markdown h1 {
   color: #e2e8f0;
-  border-bottom-color: rgba(255,255,255,0.1);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
 .markdown h2 {
@@ -150,7 +151,7 @@
   color: var(--nomu-blue);
 }
 
-/* ── Code blocks ─────────────────────────────── */
+/* ── Code blocks — Space Mono uniquement pour le code ── */
 .prism-code {
   font-size: 0.855rem;
   line-height: 1.65;
@@ -167,8 +168,8 @@ code {
 }
 
 [data-theme='dark'] code {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
   color: #f472b6;
 }
 
@@ -245,10 +246,10 @@ table td {
 }
 
 .footer__copyright {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inter', sans-serif;
   font-size: 0.72rem;
   color: rgba(228, 219, 203, 0.3);
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
