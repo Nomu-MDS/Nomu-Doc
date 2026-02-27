@@ -1,0 +1,7 @@
+{
+  "label": "Recherche Sémantique",
+  "position": 3,
+  "collapsible": true,
+  "collapsed": false,
+  "link": { "type": "generated-index", "description": "Meilisearch + OpenAI embeddings — indexation et algorithme de recherche hybride." }
+}

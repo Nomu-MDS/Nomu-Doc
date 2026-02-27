@@ -1,0 +1,7 @@
+{
+  "label": "API Reference",
+  "position": 2,
+  "collapsible": true,
+  "collapsed": false,
+  "link": { "type": "generated-index", "description": "Tous les endpoints REST de la plateforme Nomu — headers, body et réponses." }
+}

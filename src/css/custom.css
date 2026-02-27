@@ -1,0 +1,254 @@
+/* ─────────────────────────────────────────────
+   NOMU DOCS — Custom Theme
+   Brand: Navy #0E224A · Blue #465E8A · Cream #E4DBCB · Coral #FF6A57
+───────────────────────────────────────────── */
+
+/* Fonts */
+:root {
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: 'Space Mono', 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Brand palette */
+  --nomu-navy: #0E224A;
+  --nomu-blue: #465E8A;
+  --nomu-cream: #E4DBCB;
+  --nomu-coral: #FF6A57;
+  --nomu-light-bg: #F5F2EC;
+
+  /* Docusaurus primary → Nomu blue */
+  --ifm-color-primary: #465E8A;
+  --ifm-color-primary-dark: #3d5279;
+  --ifm-color-primary-darker: #394d72;
+  --ifm-color-primary-darkest: #2f3f5e;
+  --ifm-color-primary-light: #546d9e;
+  --ifm-color-primary-lighter: #5c75a6;
+  --ifm-color-primary-lightest: #6d86b4;
+
+  --ifm-code-font-size: 88%;
+  --ifm-heading-font-weight: 700;
+  --ifm-line-height-base: 1.7;
+  --ifm-border-radius: 8px;
+
+  --docusaurus-highlighted-code-line-bg: rgba(70, 94, 138, 0.08);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #7da4d8;
+  --ifm-color-primary-dark: #6595d0;
+  --ifm-color-primary-darker: #5b8dcc;
+  --ifm-color-primary-darkest: #4276ba;
+  --ifm-color-primary-light: #95b3e0;
+  --ifm-color-primary-lighter: #9fbce4;
+  --ifm-color-primary-lightest: #bed1ee;
+  --ifm-background-color: #111827;
+  --ifm-navbar-background-color: #0d1a2e;
+  --ifm-sidebar-background: #111827;
+  --docusaurus-highlighted-code-line-bg: rgba(125, 164, 216, 0.12);
+}
+
+/* ── Navbar ─────────────────────────────────── */
+.navbar {
+  background-color: var(--nomu-navy);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+  padding: 0 1.5rem;
+}
+
+.navbar__logo {
+  height: 2rem;
+}
+
+.navbar__title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--nomu-cream);
+}
+
+.navbar__link {
+  color: rgba(228, 219, 203, 0.75);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.navbar__link:hover,
+.navbar__link--active {
+  color: #fff;
+}
+
+/* GitHub icon in navbar */
+.navbar-github-link::before {
+  content: '';
+  display: flex;
+  width: 1.3rem;
+  height: 1.3rem;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='rgba(228,219,203,0.75)' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E") no-repeat center;
+  background-size: contain;
+}
+
+.navbar-github-link:hover::before {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='white' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E");
+}
+
+/* ── Sidebar ─────────────────────────────────── */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.menu__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.menu__link--active {
+  font-weight: 700;
+  background-color: rgba(70, 94, 138, 0.1);
+  color: var(--nomu-blue);
+}
+
+[data-theme='dark'] .menu__link--active {
+  background-color: rgba(125, 164, 216, 0.12);
+  color: var(--ifm-color-primary-light);
+}
+
+.menu__caret::before {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1.2rem 1.2rem;
+}
+
+/* ── Content ─────────────────────────────────── */
+.markdown h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--nomu-navy);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--nomu-cream);
+}
+
+[data-theme='dark'] .markdown h1 {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+
+.markdown h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--nomu-navy);
+  margin-top: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] .markdown h2 {
+  color: #cbd5e1;
+}
+
+.markdown h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--nomu-blue);
+}
+
+/* ── Code blocks ─────────────────────────────── */
+.prism-code {
+  font-size: 0.855rem;
+  line-height: 1.65;
+}
+
+code {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.86em;
+  background: rgba(70, 94, 138, 0.08);
+  border: 1px solid rgba(70, 94, 138, 0.12);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  color: #c53d71;
+}
+
+[data-theme='dark'] code {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.1);
+  color: #f472b6;
+}
+
+/* ── Tables ──────────────────────────────────── */
+table {
+  font-size: 0.875rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  width: 100%;
+}
+
+table thead tr {
+  background-color: var(--nomu-navy);
+  color: var(--nomu-cream);
+}
+
+table thead th {
+  color: var(--nomu-cream) !important;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.7rem 1rem;
+  border: none;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: rgba(70, 94, 138, 0.04);
+}
+
+table td {
+  padding: 0.6rem 1rem;
+  border-color: var(--ifm-color-emphasis-200);
+}
+
+/* ── Admonitions ─────────────────────────────── */
+.alert {
+  border-radius: 10px;
+  border-left-width: 4px;
+  font-size: 0.9rem;
+}
+
+.alert--info { border-left-color: var(--nomu-blue); }
+.alert--warning { border-left-color: #f59e0b; }
+.alert--danger { border-left-color: var(--nomu-coral); }
+.alert--success { border-left-color: #10b981; }
+
+/* ── Footer ──────────────────────────────────── */
+.footer {
+  background-color: var(--nomu-navy);
+  padding: 3rem 2rem 2rem;
+}
+
+.footer__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(228, 219, 203, 0.5);
+  margin-bottom: 0.75rem;
+}
+
+.footer__link-item {
+  font-size: 0.875rem;
+  color: rgba(228, 219, 203, 0.7);
+  transition: color 0.15s;
+}
+
+.footer__link-item:hover {
+  color: var(--nomu-cream);
+  text-decoration: none;
+}
+
+.footer__copyright {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(228, 219, 203, 0.3);
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}

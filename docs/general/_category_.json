@@ -1,0 +1,7 @@
+{
+  "label": "Général",
+  "position": 1,
+  "collapsible": true,
+  "collapsed": false,
+  "link": { "type": "generated-index", "description": "Architecture, mise en route, base de données et variables d'environnement." }
+}

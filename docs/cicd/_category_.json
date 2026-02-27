@@ -1,0 +1,7 @@
+{
+  "label": "CI/CD & Déploiement",
+  "position": 5,
+  "collapsible": true,
+  "collapsed": false,
+  "link": { "type": "generated-index", "description": "GitHub Actions, Docker multi-stage et déploiement zero-downtime sur VPS." }
+}
