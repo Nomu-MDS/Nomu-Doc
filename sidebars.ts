@@ -24,7 +24,6 @@ const sidebars: SidebarsConfig = {
         'api/interests',
         'api/conversations',
         'api/reservations',
-        'api/tokens',
         'api/reports',
       ],
     },
