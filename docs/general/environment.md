@@ -75,9 +75,9 @@ MINIO_PUBLIC_URL=
 
 ```env
 # Nomu-Web/.env
-NUXT_API_BASE_URL=http://localhost:3001
-NUXT_PUBLIC_SOCKET_URL=http://localhost:3001
-NUXT_PUBLIC_API_BASE=http://localhost:3001
+NUXT_API_BASE_URL=
+NUXT_PUBLIC_SOCKET_URL=
+NUXT_PUBLIC_API_BASE=
 ```
 
 ## Proxy Nuxt
@@ -109,7 +109,7 @@ Les appels `$fetch('/api/users/me')` sont automatiquement redirigés vers `http:
 
 ```env
 # Nomu-Front/.env
-EXPO_PUBLIC_API_BASE_URL=http://localhost:3001
+EXPO_PUBLIC_API_BASE_URL=
 EXPO_PUBLIC_GOOGLE_CLIENT_ID=
 EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
 ```
@@ -130,5 +130,5 @@ EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID=
 NUXT_SESSION_PASSWORD=
 NUXT_OAUTH_GOOGLE_CLIENT_ID=
 NUXT_OAUTH_GOOGLE_CLIENT_SECRET=
-NUXT_API_BASE=http://localhost:3001
+NUXT_API_BASE=
 ```
