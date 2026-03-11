@@ -5,28 +5,67 @@ sidebar_position: 1
 
 # Architecture générale
 
+## Cas d'utilisation
+
+```mermaid
+flowchart LR
+    subgraph Acteurs
+        V["🧍 Voyageur"]
+        L["🏠 Local / Hôte"]
+        A["🛡️ Administrateur"]
+    end
+
+    subgraph Systeme ["Plateforme Nomu"]
+        direction TB
+        UC1(["Gérer son compte & profil"])
+        UC2(["Recherche sémantique (IA)"])
+        UC3(["Réserver une expérience"])
+        UC4(["Chat temps réel (WSS)"])
+        UC5(["Gérer ses disponibilités"])
+        UC6(["Modérer les signalements"])
+        UC7(["Gestion des intérêts"])
+    end
+
+    V --- UC1 & UC2 & UC3 & UC4
+    L --- UC1 & UC5 & UC3 & UC4
+    A --- UC6 & UC7
+```
+
 ## Vue d'ensemble
 
 ```mermaid
-graph TD
-    A["CLIENTS — Nomu-Web (Nuxt 4) · Nomu-Mobile (React Native)"]
-    B["nginx — reverse proxy"]
-    C["Nomu-Back — Express 5 + Socket.IO"]
-    D["REST API<br/>Express"]
-    E["WebSocket<br/>Socket.IO"]
-    F["Scheduler<br/>setInterval"]
-    G["PostgreSQL<br/>Sequelize"]
-    H["Meilisearch<br/>Vector DB"]
-    I["OpenAI API<br/>Embeddings"]
+flowchart LR
+    subgraph Clients ["Couche Présentation"]
+        direction TB
+        Mobile["📱 Nomu-Front\n(React Native)"]
+        Web["🌐 Nomu-Web\n(Nuxt.js)"]
+        Admin["🛠️ Nomu-Admin\n(Nuxt.js)"]
+        Doc["📚 Nomu-Doc\n(Docusaurus)"]
+    end
 
-    A -->|"HTTPS / WSS"| B
-    B --> C
-    C --> D
-    C --> E
-    C --> F
-    D --> G
-    E --> H
-    F --> I
+    Gateway["🛡️ Nginx Gateway"]
+
+    subgraph Backend ["Cœur Applicatif"]
+        API["⚙️ Nomu-Back\n(Express + Socket.io)"]
+    end
+
+    subgraph Data ["Stockage & Recherche"]
+        direction TB
+        PG[("🗄️ PostgreSQL\n(Sequelize)")]
+        MinIO[("📦 MinIO\n(S3 Media Storage)")]
+        Meili[("🔍 Meilisearch\n(Vecteurs & Index)")]
+    end
+
+    subgraph External ["Cloud Tiers"]
+        direction TB
+        OpenAI["🧠 OpenAI API\n(Embeddings)"]
+        FCM["🔔 Firebase\n(Push Notifications)"]
+    end
+
+    Clients ==> Gateway ==> API
+    API <==> PG & MinIO & Meili
+    Meili -.-> OpenAI
+    API -.-> FCM
 ```
 
 ## Stack technique

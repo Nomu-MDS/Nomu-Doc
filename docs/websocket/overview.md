@@ -11,22 +11,34 @@ Nomu utilise **Socket.IO 4.x** pour la messagerie instantanée entre membres.
 
 ```mermaid
 sequenceDiagram
-    participant C as Client (Nuxt/Mobile)
-    participant S as Express + Socket.IO
+    autonumber
+    actor V as Voyageur (Expéditeur)
+    participant WSS as Serveur WebSocket (Socket.io)
+    participant DB as PostgreSQL
+    participant FCM as Firebase (FCM)
+    actor L as Local (Destinataire)
 
-    C->>S: connect (auth token)
-    S->>S: socketAuthMiddleware — vérif JWT / session
-    S-->>C: connected
+    V->>WSS: connect (auth token)
+    WSS->>WSS: socketAuthMiddleware — vérif JWT / session
+    WSS-->>V: connected
 
-    C->>S: join_conversation(5)
-    S->>S: socket.join('conversation:5')
+    V->>WSS: join_conversation(5)
+    WSS->>WSS: socket.join('conversation:5')
 
-    C->>S: send_message({...})
-    S->>S: DB insert + broadcast to room
-    S-->>C: new_message({...})
+    V->>WSS: send_message({ convId, content })
+    WSS->>DB: INSERT INTO messages
+    DB-->>WSS: Confirmation & ID du message
+    WSS-->>V: new_message(message)
 
-    C->>S: typing({ isTyping: true })
-    S-->>C: user_typing({...})
+    alt Destinataire en ligne
+        WSS->>L: new_message(message)
+    else Destinataire hors-ligne
+        WSS->>FCM: Envoi d'un payload Push
+        FCM-->>L: Notification mobile reçue
+    end
+
+    V->>WSS: typing({ isTyping: true })
+    WSS-->>L: user_typing({...})
 ```
 
 ## Connexion et authentification

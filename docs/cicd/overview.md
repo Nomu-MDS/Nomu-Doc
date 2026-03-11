@@ -39,6 +39,36 @@ flowchart TD
     MERGE --> CD
 ```
 
+## Infrastructure VPS
+
+```mermaid
+flowchart TB
+    subgraph VPS ["Serveur VPS Linux (Production)"]
+        direction TB
+        Nginx["🛡️ Nginx Gateway\n(SSL Certbot)"]
+
+        subgraph DockerNet ["Réseau Docker Privé (nomu-network)"]
+            API_C["⚙️ API Express"]
+            PG_C[("🗄️ PostgreSQL")]
+            MS_C["🔍 Meilisearch"]
+            MIN_C["📦 MinIO"]
+        end
+
+        subgraph Supervision ["Admin"]
+            Portainer["🐳 Portainer"]
+            Adminer["🛠️ Adminer"]
+        end
+
+        Runner["🤖 Runner GitHub\n(Self-hosted)"]
+    end
+
+    Internet((Internet)) ==> Nginx
+    Nginx ==> API_C
+    Nginx -.-> Supervision
+    API_C <--> PG_C & MS_C & MIN_C
+    Runner -.->|CD Trigger| DockerNet
+```
+
 ## Secrets GitHub requis
 
 | Secret | Description |

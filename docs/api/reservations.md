@@ -7,6 +7,37 @@ sidebar_position: 6
 
 Les réservations sont liées à une conversation et permettent de formaliser une activité entre deux membres.
 
+## Cycle de vie
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor V as Voyageur
+    participant API as API Nomu-Back
+    participant DB as PostgreSQL
+    actor L as Local (Hôte)
+
+    V->>API: POST /reservations { conversation_id, date, price... }
+    API->>DB: INSERT INTO reservations (status: 'pending')
+    DB-->>API: ID de la réservation
+    API-->>V: 201 Created
+
+    Note over L, API: Plus tard...
+
+    L->>API: GET /reservations/me
+    API-->>L: Liste des réservations (pending)
+    L->>API: PATCH /reservations/:id/accept
+    API->>DB: UPDATE status = 'accepted'
+    DB-->>API: OK
+    API-->>L: 200 OK { status: 'accepted' }
+```
+
+:::info Règles métier
+- Seul le **non-créateur** de la réservation peut l'accepter ou la refuser
+- Les statuts sont terminaux : `accepted` et `declined` sont irréversibles
+- `price` est stocké en `DECIMAL` — Sequelize peut retourner une string, toujours faire `parseFloat()`
+:::
+
 ## POST /reservations
 
 **Auth requis**

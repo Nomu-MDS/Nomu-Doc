@@ -7,44 +7,86 @@ sidebar_position: 3
 
 ## Schéma relationnel
 
-```
-users
-├── id (PK)
-├── name, email (UNIQUE), password
-├── bio, location, role, is_active
-│
-└──▶ profiles (via user_id)
-     ├── id (PK), user_id (FK)
-     ├── first_name, last_name, age
-     ├── biography, country, city, image_url
-     ├── is_searchable
-     │
-     └──▶ profile_interests (join table)
-          ├── profile_id (FK)
-          └── interest_id (FK)
-               └──▶ interests
-                    ├── id, name, icon, is_active
+```mermaid
+erDiagram
+    users {
+        int id PK
+        string name
+        string email UK
+        string password
+        string googleId "OAuth"
+        text bio
+        string location
+        string role "user|admin"
+        boolean is_active
+    }
+    profiles {
+        int id PK
+        int user_id FK
+        string first_name
+        string last_name
+        int age
+        text biography
+        string country
+        string city
+        string image_url
+        boolean is_searchable
+    }
+    interests {
+        int id PK
+        string name
+        string icon
+        boolean is_active
+    }
+    profile_interests {
+        int profile_id FK
+        int interest_id FK
+    }
+    conversations {
+        int id PK
+        int voyager_id FK
+        int local_id FK
+    }
+    messages {
+        int id PK
+        int user_id FK
+        int conversation_id FK
+        text content
+        string attachment
+        boolean read
+    }
+    reservations {
+        int id PK
+        string title
+        int conversation_id FK
+        int creator_id FK
+        decimal price
+        datetime date
+        datetime end_date
+        string status
+    }
+    reports {
+        int id PK
+        int reporter_id FK
+        int reported_user_id FK
+        string reason
+        text message
+        string status
+        int reviewed_by FK
+        text admin_notes
+        datetime reviewed_at
+    }
 
-users ──▶ conversations
-          ├── id (PK)
-          ├── voyager_id (FK → users)
-          ├── local_id (FK → users)
-          │   UNIQUE (voyager_id, local_id)
-          │
-          └──▶ messages
-               ├── id, user_id, conversation_id
-               ├── content (TEXT), attachment
-               └── read (BOOLEAN)
-
-          └──▶ reservations
-               ├── id, title, conversation_id
-               ├── creator_id, price, date, end_date
-               └── status (pending|accepted|declined)
-
-users ──▶ reports
-          ├── id, reporter_id, reported_user_id
-          ├── reason, message, status
-          └── reviewed_by, admin_notes
+    users ||--o| profiles : "profil"
+    profiles }o--o{ interests : "profile_interests"
+    users ||--o{ conversations : "voyager_id"
+    users ||--o{ conversations : "local_id"
+    conversations ||--o{ messages : "contient"
+    conversations ||--o{ reservations : "contient"
+    users ||--o{ messages : "auteur"
+    users ||--o{ reservations : "créateur"
+    users ||--o{ reports : "reporter_id"
+    users ||--o{ reports : "reported_user_id"
 ```
 
 ## Modèles Sequelize
