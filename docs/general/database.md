@@ -41,14 +41,6 @@ users ──▶ conversations
                ├── creator_id, price, date, end_date
                └── status (pending|accepted|declined)
 
-users ──▶ wallets
-          ├── id, user_id (UNIQUE), balance
-
-users ──▶ token_transactions
-          ├── id, user_id, amount, type
-          ├── balance_before, balance_after
-          └── reason, metadata (JSONB)
-
 users ──▶ reports
           ├── id, reporter_id, reported_user_id
           ├── reason, message, status
@@ -135,29 +127,6 @@ users ──▶ reports
     type: ENUM('pending', 'accepted', 'declined'),
     defaultValue: 'pending',
   },
-}
-```
-
-### TokenTransaction
-
-```javascript
-{
-  id: { type: INTEGER, autoIncrement: true, primaryKey: true },
-  user_id: { type: INTEGER, references: 'users' },
-  amount: { type: INTEGER },          // positif = crédit, négatif = débit
-  type: {
-    type: ENUM(
-      'SIGNUP_BONUS', 'MESSAGE_SENT', 'ADMIN_ADJUSTMENT',
-      'PURCHASE', 'REFUND', 'ACTIVITY_PAYMENT',
-      'ACTIVITY_RECEIPT', 'PENALTY', 'BONUS',
-      'WITHDRAWAL', 'DEPOSIT'
-    )
-  },
-  reason: { type: STRING },
-  metadata: { type: JSONB },
-  balance_before: { type: INTEGER },  // audit trail immuable
-  balance_after: { type: INTEGER },
-  // Pas de updatedAt (createdAt uniquement)
 }
 ```
 

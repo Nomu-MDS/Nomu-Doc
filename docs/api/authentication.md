@@ -9,7 +9,7 @@ sidebar_position: 2
 
 **Public**
 
-Crée un nouveau compte utilisateur, un profil associé et un wallet. Retourne un token JWT et connecte automatiquement l'utilisateur via session.
+Crée un nouveau compte utilisateur et un profil associé. Retourne un token JWT et connecte automatiquement l'utilisateur via session.
 
 ### Request
 
