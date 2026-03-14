@@ -5,6 +5,11 @@ sidebar_position: 2
 
 # Événements WebSocket
 
+:::info Format des rooms
+Les rooms de conversation utilisent le format `conversation_{id}` (underscore, pas deux-points).
+Exemple : `conversation_5`
+:::
+
 ## Événements émis par le client
 
 ### `join_conversation`
@@ -12,13 +17,14 @@ sidebar_position: 2
 Rejoindre une room de conversation pour recevoir les messages en temps réel.
 
 ```typescript
-socket.emit('join_conversation', conversationId: number)
+socket.emit('join_conversation', { conversation_id: number })
 ```
 
 ```javascript
 // Côté serveur
-socket.on('join_conversation', (conversationId) => {
-  socket.join(`conversation:${conversationId}`)
+socket.on('join_conversation', ({ conversation_id }) => {
+  socket.join(`conversation_${conversation_id}`)
+  socket.emit('joined_conversation', { conversation_id })
 })
 ```
 
@@ -29,7 +35,7 @@ socket.on('join_conversation', (conversationId) => {
 Quitter une room.
 
 ```typescript
-socket.emit('leave_conversation', conversationId: number)
+socket.emit('leave_conversation', { conversation_id: number })
 ```
 
 ---
@@ -75,7 +81,7 @@ socket.on('send_message', async ({ conversation_id, content, attachment }) => {
   })
 
   // Broadcast à la room
-  io.to(`conversation:${conversation_id}`).emit('new_message', {
+  io.to(`conversation_${conversation_id}`).emit('new_message', {
     ...message.toJSON(),
     Sender: { id: socket.userId, name: socket.dbUser.name },
   })
@@ -99,18 +105,32 @@ socket.emit('typing', {
 
 ### `message_read`
 
-Marquer un message comme lu.
+Marquer un message comme lu. Seul `message_id` est requis — le serveur retrouve la conversation via le message.
 
 ```typescript
 socket.emit('message_read', {
   message_id: number,
-  conversation_id: number,
 })
 ```
 
 ---
 
 ## Événements émis par le serveur
+
+### `joined_conversation`
+
+Confirmation que le client a bien rejoint la room.
+
+```typescript
+// Payload
+{
+  conversation_id: number
+}
+```
+
+Émis uniquement à l'émetteur (`socket.emit()`).
+
+---
 
 ### `new_message`
 
@@ -141,7 +161,8 @@ Un utilisateur est en train d'écrire.
 ```typescript
 // Payload
 {
-  user_id: number,
+  userId: number,
+  userName: string,
   conversation_id: number,
   isTyping: boolean,
 }
@@ -160,9 +181,55 @@ Confirmation de lecture d'un message.
 {
   message_id: number,
   conversation_id: number,
-  read_by: number,  // user_id du lecteur
+  read: boolean,   // toujours true
 }
 ```
+
+Émis à tous les membres de la room (`io.to(room).emit()`).
+
+---
+
+### `reservation_created`
+
+Une nouvelle réservation a été créée dans la conversation.
+
+```typescript
+// Payload
+{
+  reservation: {
+    id: number,
+    title: string,
+    price: string,         // DECIMAL retourné en string par Sequelize → parseFloat()
+    date: string,
+    end_date: string,
+    status: 'pending',
+    creator_id: number,
+    conversation_id: number,
+    createdAt: string,
+  }
+}
+```
+
+Émis à tous les membres de la room.
+
+---
+
+### `reservation_updated`
+
+Le statut d'une réservation a changé (acceptée ou refusée).
+
+```typescript
+// Payload
+{
+  reservation: {
+    id: number,
+    status: 'accepted' | 'declined',
+    // ... autres champs de la réservation
+  }
+}
+```
+
+Émis à tous les membres de la room.
 
 ---
 
@@ -184,7 +251,12 @@ Erreur lors du traitement d'un événement.
 const socket = connect()
 
 // Rejoindre une conversation
-socket.emit('join_conversation', 5)
+socket.emit('join_conversation', { conversation_id: 5 })
+
+// Écouter la confirmation
+socket.on('joined_conversation', ({ conversation_id }) => {
+  console.log(`Rejoint la room conversation_${conversation_id}`)
+})
 
 // Envoyer un message
 socket.emit('send_message', {
@@ -198,9 +270,24 @@ socket.on('new_message', (message) => {
 })
 
 // Écouter les indicateurs de frappe
-socket.on('user_typing', ({ user_id, isTyping }) => {
-  typingUsers.value = isTyping
-    ? [...typingUsers.value, user_id]
-    : typingUsers.value.filter(id => id !== user_id)
+socket.on('user_typing', ({ userId, userName, isTyping }) => {
+  if (isTyping) typingUserName.value = userName
+  isOtherTyping.value = isTyping
+})
+
+// Écouter les mises à jour de lecture
+socket.on('message_read_update', ({ message_id, read }) => {
+  const msg = messages.value.find(m => m.id === message_id)
+  if (msg) msg.read = read
+})
+
+// Écouter les réservations en temps réel
+socket.on('reservation_created', ({ reservation }) => {
+  reservations.value.push(reservation)
+})
+
+socket.on('reservation_updated', ({ reservation }) => {
+  const idx = reservations.value.findIndex(r => r.id === reservation.id)
+  if (idx !== -1) Object.assign(reservations.value[idx], reservation)
 })
 ```

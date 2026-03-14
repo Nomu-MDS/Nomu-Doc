@@ -38,6 +38,40 @@ sequenceDiagram
 - `price` est stocké en `DECIMAL` — Sequelize peut retourner une string, toujours faire `parseFloat()`
 :::
 
+## Message système de réservation
+
+Lorsqu'une réservation est créée, un **message système** au format JSON est automatiquement posté dans la conversation. Ce message sert de notification temps réel à l'autre participant.
+
+```json
+{
+  "__type": "reservation",
+  "id": 3,
+  "title": "Randonnée Fontainebleau",
+  "price": 45.00,
+  "date": "2025-04-10T09:00:00.000Z",
+  "end_date": "2025-04-10T17:00:00.000Z",
+  "status": "pending",
+  "creator_id": 42
+}
+```
+
+:::info Filtrage côté client
+Les messages dont `content` commence par `{"__type":"reservation"` sont des messages système et doivent être filtrés de l'affichage textuel. L'affichage de la réservation est géré par un composant dédié (`ReservationBubble`) qui parse ce JSON.
+:::
+
+## Événements WebSocket
+
+La création et les mises à jour de statut sont diffusées en temps réel via Socket.IO à tous les participants de la conversation.
+
+| Événement | Déclencheur | Payload |
+|-----------|-------------|---------|
+| `reservation_created` | `POST /reservations` | `{ reservation }` |
+| `reservation_updated` | `PATCH .../accept` ou `.../decline` | `{ reservation }` |
+
+Voir [Événements WebSocket](/websocket/events) pour le détail des payloads.
+
+---
+
 ## POST /reservations
 
 **Auth requis**

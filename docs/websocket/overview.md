@@ -15,30 +15,24 @@ sequenceDiagram
     actor V as Voyageur (Expéditeur)
     participant WSS as Serveur WebSocket (Socket.io)
     participant DB as PostgreSQL
-    participant FCM as Firebase (FCM)
     actor L as Local (Destinataire)
 
     V->>WSS: connect (auth token)
     WSS->>WSS: socketAuthMiddleware — vérif JWT / session
     WSS-->>V: connected
 
-    V->>WSS: join_conversation(5)
-    WSS->>WSS: socket.join('conversation:5')
+    V->>WSS: join_conversation({ conversation_id: 5 })
+    WSS->>WSS: socket.join('conversation_5')
+    WSS-->>V: joined_conversation({ conversation_id: 5 })
 
-    V->>WSS: send_message({ convId, content })
+    V->>WSS: send_message({ conversation_id, content })
     WSS->>DB: INSERT INTO messages
     DB-->>WSS: Confirmation & ID du message
+    WSS->>L: new_message(message)
     WSS-->>V: new_message(message)
 
-    alt Destinataire en ligne
-        WSS->>L: new_message(message)
-    else Destinataire hors-ligne
-        WSS->>FCM: Envoi d'un payload Push
-        FCM-->>L: Notification mobile reçue
-    end
-
     V->>WSS: typing({ isTyping: true })
-    WSS-->>L: user_typing({...})
+    WSS-->>L: user_typing({ userId, userName, isTyping })
 ```
 
 ## Connexion et authentification

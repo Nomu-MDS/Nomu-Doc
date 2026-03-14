@@ -28,8 +28,8 @@ Authorization: Bearer <token>
     "id": 5,
     "voyager_id": 42,
     "local_id": 17,
-    "Voyager": { "id": 42, "name": "Marie Dupont", "email": "marie@..." },
-    "Local": { "id": 17, "name": "Jean Martin", "email": "jean@..." },
+    "Voyager": { "id": 42, "name": "Marie Dupont", "email": "marie@...", "image_url": "https://minio.example.com/profiles/user_42/avatar.jpg" },
+    "Local": { "id": 17, "name": "Jean Martin", "email": "jean@...", "image_url": null },
     "Messages": [
       {
         "id": 88,
@@ -62,28 +62,24 @@ Content-Type: application/json
 
 ```json
 {
-  "other_user_id": 17
+  "otherUserId": 17
 }
 ```
 
 ### Response
 
-**201 Created**
+**201 Created** (nouvelle) ou **200 OK** (déjà existante)
 
 ```json
 {
-  "id": 5,
-  "voyager_id": 42,
-  "local_id": 17
-}
-```
-
-**409 Conflict** — Conversation déjà existante
-
-```json
-{
-  "error": "Une conversation existe déjà entre ces deux utilisateurs",
-  "conversation_id": 5
+  "conversation": {
+    "id": 5,
+    "voyager_id": 42,
+    "local_id": 17,
+    "Voyager": { "id": 42, "name": "Marie Dupont", "email": "marie@...", "image_url": null },
+    "Local": { "id": 17, "name": "Jean Martin", "email": "jean@...", "image_url": "https://minio.example.com/profiles/user_17/avatar.jpg" }
+  },
+  "existed": false
 }
 ```
 
@@ -95,7 +91,7 @@ Content-Type: application/json
 
 **Auth requis**
 
-Retourne les détails d'une conversation (participants + réservations).
+Retourne les détails d'une conversation (participants uniquement). Les réservations sont récupérées séparément via `GET /reservations/me`.
 
 ### Request
 
@@ -110,18 +106,13 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "id": 5,
-  "Voyager": { "id": 42, "name": "Marie Dupont" },
-  "Local": { "id": 17, "name": "Jean Martin" },
-  "Reservations": [
-    {
-      "id": 3,
-      "title": "Randonnée Fontainebleau",
-      "price": 45.00,
-      "date": "2025-04-10T09:00:00.000Z",
-      "status": "accepted"
-    }
-  ]
+  "conversation": {
+    "id": 5,
+    "voyager_id": 42,
+    "local_id": 17,
+    "Voyager": { "id": 42, "name": "Marie Dupont", "email": "marie@...", "image_url": null },
+    "Local": { "id": 17, "name": "Jean Martin", "email": "jean@...", "image_url": "https://minio.example.com/profiles/user_17/avatar.jpg" }
+  }
 }
 ```
 
@@ -185,6 +176,7 @@ Authorization: Bearer <token>
 
 ```json
 {
-  "success": true
+  "message": "Message marked as read",
+  "messageId": 88
 }
 ```

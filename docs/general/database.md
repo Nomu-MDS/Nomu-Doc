@@ -76,7 +76,6 @@ erDiagram
         text admin_notes
         datetime reviewed_at
     }
-
     users ||--o| profiles : "profil"
     profiles }o--o{ interests : "profile_interests"
     users ||--o{ conversations : "voyager_id"

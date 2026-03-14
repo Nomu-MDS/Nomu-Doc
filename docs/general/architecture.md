@@ -59,13 +59,11 @@ flowchart LR
     subgraph External ["Cloud Tiers"]
         direction TB
         OpenAI["🧠 OpenAI API\n(Embeddings)"]
-        FCM["🔔 Firebase\n(Push Notifications)"]
     end
 
     Clients ==> Gateway ==> API
     API <==> PG & MinIO & Meili
     Meili -.-> OpenAI
-    API -.-> FCM
 ```
 
 ## Stack technique

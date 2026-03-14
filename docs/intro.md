@@ -16,7 +16,7 @@ Nomu est composé de trois projets distincts :
 |--------|-------|-------------|
 | **Nomu-Back** | Node.js / Express 5 / Sequelize / PostgreSQL | API REST + WebSocket |
 | **Nomu-Web** | Nuxt 4 / Vue 3 / Pinia / Tailwind | Application web |
-| **Nomu-Mobile** | React Native / Expo | Application mobile |
+| **Nomu-Front** | React Native / Expo | Application mobile |
 
 ## Sections de la documentation
 
